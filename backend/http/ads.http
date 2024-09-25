@@ -28,5 +28,6 @@ PUT http://localhost:3000/ads/2
 Content-Type: application/json
 
 {
-    "price": 800
+    "price": 100000000,
+    "title": "Blouson de badass!"
 }
