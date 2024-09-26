@@ -1,7 +1,8 @@
+import "reflect-metadata";
 import express from "express";
-import sqlite3  from "sqlite3";
-
-const db = new sqlite3.Database("good_corner.sqlite");
+import { dataSource } from "./config/db";
+import { Ad } from "./entities/Ad";
+import { validate } from "class-validator";
 
 const app = express();
 const port = 3000;
@@ -12,67 +13,53 @@ app.get("/", (_req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/ads", (_req, res) => {
-  db.all("SELECT * FROM ad", (err, rows) => {
-    if(err) {
-      console.log(err);
-    } else {
-      res.send(rows);
-    }
-  })
+app.get("/ads", async (_req, res) => {
+  const ads = await Ad.find();
+  res.send(ads);
 }); 
 
-app.post("/ads", (req,res) => {
-  const { title, description, owner, price, picture, location } = req.body;
+app.post("/ads", async (req,res) => {
+  const ad = new Ad();
+  ad.title = req.body.title;
+  ad.description = req.body.description;
+  ad.owner = req.body.owner;
+  ad.price = req.body.price;
+  ad.picture = req.body.picture;
+  ad.location = req.body.location;
+  ad.createdAt = req.body.createdAt;
+
+  const errors = await validate(ad);
+  if (errors.length > 0) {
+    console.log(errors);
+    // throw new Error("Validation failed");
+    res.status(400).send("Invalid input");
+  } else {
+    const result = await ad.save();
+    res.send(result);
+  }
+});
+
+app.delete("/ads/:id", async (req,res) => {
+  const id = parseInt(req.params.id);
+  const result = await Ad.delete({id});
+  res.send(result);
+});
+
+app.put("/ads/:id", async (req, res) => {
   try {
-    const stmt = db.prepare(
-      "INSERT INTO ad (title, description, owner, price, picture, location, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    );
-    const createdAt = new Date();
-    stmt.run([
-      title, description, owner, price, picture, location, createdAt
-    ]);
-    res.send('Ad insert into DB');
+    const id = parseInt(req.params.id);
+    let adToUpdate = await Ad.findOneByOrFail({id});
+    adToUpdate = Object.assign(adToUpdate, req.body);
+    const result = await adToUpdate.save();
+    console.log(result);
+    res.send("Ad has been updated");
   } catch (error) {
     console.log(error);
-    res.send('Error :' + error);
+    res.status(400).send('Invalid request');
   }
 });
 
-app.delete("/ads/:id", (req,res) => {
-  const id = parseInt(req.params.id)
-  try {
-    const stmt = db.prepare('DELETE FROM ad WHERE id = ?');
-    stmt.run([id]);
-    res.send("Ad has been deleted");
-  } catch (error) {
-    console.log(error)
-    res.send('Error :' + error);
-  }
-});
-
-app.put("/ads/:id", (req, res) => {
-  db.get(
-    "SELECT * FROM ad WHERE id = (?)",
-    req.params.id,
-    (_err, data: any) => {
-      const stmt = db.prepare(
-        "UPDATE ad SET title = ?, description = ?, owner = ?, price = ?, picture = ?, location = ?, createdAt = ? WHERE id = ?"
-      );
-      stmt.run([
-        req.body.title ? req.body.title : data.title,
-        req.body.description ? req.body.description : data.description,
-        req.body.owner ? req.body.owner : data.owner,
-        req.body.price ? req.body.price : data.price,
-        req.body.picture ? req.body.picture : data.picture,
-        req.body.location ? req.body.location : data.location,
-        req.body.createdAt ? req.body.createdAt : data.createdAt,
-        req.params.id,
-      ]);
-    });
-    res.send('Ad has been updated');
-});
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(port, async () => {
+  await dataSource.initialize();
+  console.log(`Server launch on port ${port}`);
 });

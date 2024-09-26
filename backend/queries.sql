@@ -1,24 +1,21 @@
-PRAGMA foreign_key = ON;
+PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS ad 
 (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title VARCHAR(100) NOT NULL,
-    description TEXT,
-    owner VARCHAR(100) NOT NULL,
-    price INT,
-    picture VARCHAR(255), 
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	title VARCHAR(100) NOT NULL,
+	description TEXT,
+	owner VARCHAR(100) NOT NULL,
+	price INT,
+    picture VARCHAR(100),
     location VARCHAR(100),
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    category_id INT,
+	createdAt DATE,
+    category_id INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-CREATE TABLE IF NOT EXISTS category
-(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(100)
-);
+SELECT * FROM ad
+LEFT JOIN category ON category.id = ad.category_id;
 
 
 -- INSERT INTO ad (title, description, owner, price, picture, location, createdAt)
@@ -49,3 +46,7 @@ CREATE TABLE IF NOT EXISTS category
 --         'Paris',
 --         datetime('now')
 --     );
+
+-- INSERT INTO category (name) VALUES ('autre');
+-- INSERT INTO category (name) VALUES ('vetement');
+-- INSERT INTO category (name) VALUES ('voiture');

@@ -6,7 +6,6 @@ POST http://localhost:3000/ads
 Content-Type: application/json
 
 {
-    "id": 3,
     "title": "Car to sell",
     "description":
       "My car is blue, working fine. I'm selling it because I've got a new one",
@@ -20,11 +19,11 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/ads/1
+DELETE http://localhost:3000/ads/2
 
 ###
 
-PUT http://localhost:3000/ads/2
+PUT http://localhost:3000/ads/3
 Content-Type: application/json
 
 {
