@@ -1,0 +1,10 @@
+GET http://localhost:3000/categorie
+###
+GET http://localhost:3000/categorie?name=voiture
+###
+POST http://localhost:3000/categorie
+Content-Type: application/json
+
+{
+    "name" : "autre"
+}

@@ -3,6 +3,8 @@ import express from "express";
 import { dataSource } from "./config/db";
 import { Ad } from "./entities/Ad";
 import { validate } from "class-validator";
+import { Categorie } from "./entities/Categorie";
+import { Like } from "typeorm";
 
 const app = express();
 const port = 3000;
@@ -13,9 +15,19 @@ app.get("/", (_req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/ads", async (_req, res) => {
-  const ads = await Ad.find();
-  res.send(ads);
+app.get("/ads", async (req, res) => {
+  if(req.query.categorie) {
+    const adsByCategorie = await Ad.find({ 
+      relations : { categorie : true }, 
+      where : { 
+        categorie : { name: req.query.categorie as string } 
+      }
+     });
+    res.send(adsByCategorie);
+  } else {
+    const ads = await Ad.find({ relations : {categorie : true}});
+    res.send(ads);
+  }
 }); 
 
 app.post("/ads", async (req,res) => {
@@ -27,6 +39,7 @@ app.post("/ads", async (req,res) => {
   ad.picture = req.body.picture;
   ad.location = req.body.location;
   ad.createdAt = req.body.createdAt;
+  ad.categorie = req.body.categorie ? req.body.categorie : 3;
 
   const errors = await validate(ad);
   if (errors.length > 0) {
@@ -56,6 +69,34 @@ app.put("/ads/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).send('Invalid request');
+  }
+});
+
+// categorie
+
+app.get("/categorie", async (req , res) => {
+  if(req.query.name) {
+    const categorie = await Categorie.find({ 
+      where :{ name : Like(`${req.query.name as string}%`)  }
+    });
+    res.send(categorie);
+  } else {
+    const categories = await Categorie.find();
+    res.send(categories);
+  }
+});
+
+app.post("/categorie", async (req , res) => {
+  const categorie = new Categorie();
+  categorie.name = req.body.name;
+  
+  const errors = await validate(categorie);
+  if(errors.length > 0 ) {
+    console.log(errors)
+    res.status(400).send("Invalid input");
+  } else {
+    const result = await categorie.save();
+    res.send(result);
   }
 });
 

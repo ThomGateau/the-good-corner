@@ -1,20 +1,22 @@
 GET http://localhost:3000/ads
-
+###
+GET http://localhost:3000/ads?categorie=voiture
 ###
 
 POST http://localhost:3000/ads
 Content-Type: application/json
 
 {
-    "title": "Car to sell",
+    "title": "Renault clio II",
     "description":
-      "My car is blue, working fine. I'm selling it because I've got a new one",
+      "Best car ever!",
     "owner": "car.seller@gmail.com",
     "price": 10000,
     "picture":
       "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
     "location": "Paris",
-    "createdAt": "2023-10-05T10:14:15.922Z"
+    "createdAt": "2023-10-05T10:14:15.922Z",
+    "categorie": 1
 }
 
 ###
@@ -23,10 +25,9 @@ DELETE http://localhost:3000/ads/2
 
 ###
 
-PUT http://localhost:3000/ads/3
+PUT http://localhost:3000/ads/9
 Content-Type: application/json
 
 {
-    "price": 100000000,
-    "title": "Blouson de badass!"
+    "categorie" : 1
 }

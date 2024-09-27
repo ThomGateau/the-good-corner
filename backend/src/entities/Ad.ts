@@ -1,5 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { MinLength } from "class-validator";
+import { Categorie } from "./Categorie";
+import { Tag } from "./Tag";
 
 @Entity()
 export class Ad extends BaseEntity {
@@ -27,4 +29,10 @@ export class Ad extends BaseEntity {
 
     @Column()
     createdAt: Date;
+
+    @ManyToOne(() => Categorie, categorie => categorie.ads)
+    categorie: Categorie;
+
+    @ManyToMany(() => Tag, tag => tag.ads)
+    tags: Tag[];
 }
