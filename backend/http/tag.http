@@ -1,0 +1,19 @@
+GET http://localhost:3000/tag
+###
+GET http://localhost:3000/tag?name=bleu
+###
+POST http://localhost:3000/tag
+Content-Type: application/json
+
+{
+    "name" : "jaune"
+}
+###
+DELETE http://localhost:3000/tag/2
+###
+PUT http://localhost:3000/tag/4
+Content-Type: application/json
+
+{
+    "name": "new"
+}

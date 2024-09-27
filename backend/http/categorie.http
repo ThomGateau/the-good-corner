@@ -6,5 +6,15 @@ POST http://localhost:3000/categorie
 Content-Type: application/json
 
 {
-    "name" : "autre"
+    "name" : "jouer"
+}
+
+###
+DELETE http://localhost:3000/categorie/4
+###
+PUT http://localhost:3000/categorie/4
+Content-Type: application/json
+
+{
+    "name" : "jeux"
 }
