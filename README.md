@@ -1,7 +1,5 @@
 My First React Project
 
-****** Backend ******
+**\*\*** Backend **\*\***
 
-
-
-****** Frontend ******
+**\*\*** Frontend **\*\***

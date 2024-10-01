@@ -1,47 +1,27 @@
-import { useState } from "react";
-import AdCart, { AdCartProps } from "./AdCard";
+import { useEffect, useState } from "react";
+import AdCart, { AdCardProps } from "./AdCard";
+import axios from "axios";
 
 const RecentAds = () => {
-  const ads: AdCartProps[] = [
-    {
-      title: "Table",
-      imgUrl: "/images/table.webp",
-      price: 120,
-      link: "/ads/table",
-    },
-    {
-      title: "Dame-jeanne",
-      imgUrl: "/images/dame-jeanne.webp",
-      price: 75,
-      link: "/ads/dame-jeanne",
-    },
-    {
-      title: "Vide-poche",
-      imgUrl: "/images/vide-poche.webp",
-      price: 4,
-      link: "/ads/vide-poche",
-    },
-    {
-      title: "Vaisselier",
-      imgUrl: "/images/vaisselier.webp",
-      price: 900,
-      link: "/ads/vaisselier",
-    },
-    {
-      title: "Bougie",
-      imgUrl: "/images/bougie.webp",
-      price: 8,
-      link: "/ads/bougie",
-    },
-    {
-      title: "Porte-magazine",
-      imgUrl: "/images/porte-magazine.webp",
-      price: 45,
-      link: "/ads/porte-magazine",
-    },
-  ];
   const [total, setTotal] = useState(0);
   const [color, setColor] = useState("rgb(100,100,100)");
+  const [ads, setAds] = useState<AdCardProps[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get<AdCardProps[]>(
+          "http://localhost:3000/ads"
+        );
+        console.log(result);
+        setAds(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <h2>Annonces récentes</h2>
@@ -59,13 +39,14 @@ const RecentAds = () => {
 
       <section className="recent-ads">
         {ads.map((el) => (
-          <div>
+          <div key={el.id}>
             <AdCart
-              imgUrl={el.imgUrl}
+              id={el.id}
+              picture={el.picture}
               link={el.link}
               price={el.price}
               title={el.title}
-              key={el.title}
+              categorie={el.categorie}
             />
             <button
               onClick={() => {
