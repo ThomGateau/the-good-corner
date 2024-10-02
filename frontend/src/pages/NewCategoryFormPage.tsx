@@ -10,7 +10,7 @@ const NewCategoryFormPage = () => {
         const formdata = new FormData(form as HTMLFormElement);
 
         const formJson = Object.fromEntries(formdata.entries());
-        axios.post("http://localhost:3000/categories", formJson);
+        axios.post("http://localhost:3000/categorie", formJson);
       }}
     >
       <label>

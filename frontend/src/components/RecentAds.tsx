@@ -43,7 +43,6 @@ const RecentAds = () => {
             <AdCart
               id={el.id}
               picture={el.picture}
-              link={el.link}
               price={el.price}
               title={el.title}
               categorie={el.categorie}

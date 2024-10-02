@@ -42,6 +42,13 @@ app.get("/ads", async (req, res) => {
       },
     });
     res.send(adsByTags);
+  } else if (req.query.title) {
+    const ads = await Ad.find({
+      where: {
+        title: Like(`%${req.query.title as string}%`),
+      },
+    });
+    res.send(ads);
   } else {
     const ads = await Ad.find({
       relations: {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export type categorie = {
   id: number;
@@ -8,6 +9,7 @@ export type categorie = {
 
 const Header = () => {
   const [categories, setCategories] = useState([] as categorie[]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -31,8 +33,22 @@ const Header = () => {
             <span className="desktop-long-label">THE GOOD CORNER</span>
           </a>
         </h1>
-        <form className="text-field-with-button">
-          <input className="text-field main-search-field" type="search" />
+        <form
+          className="text-field-with-button"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formdata = new FormData(form as HTMLFormElement);
+
+            const formJson = Object.fromEntries(formdata.entries());
+            navigate(`ad/search/${formJson.keyword}`);
+          }}
+        >
+          <input
+            className="text-field main-search-field"
+            type="search"
+            name="keyword"
+          />
           <button className="button button-primary">
             <svg
               aria-hidden="true"
@@ -60,7 +76,6 @@ const Header = () => {
             {el.name}
           </a>
         ))}
-        •
       </nav>
     </header>
   );

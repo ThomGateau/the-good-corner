@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { categorie } from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const NewAdFormPage = () => {
   const [categories, setCategories] = useState([] as categorie[]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -20,14 +22,18 @@ const NewAdFormPage = () => {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
 
         const form = e.target;
         const formdata = new FormData(form as HTMLFormElement);
 
         const formJson = Object.fromEntries(formdata.entries());
-        axios.post("http://localhost:3000/ads", formJson);
+        const result = await axios.post("http://localhost:3000/ads", formJson);
+        console.log(result);
+        if (result.status == 200) {
+          navigate("/");
+        }
       }}
     >
       <label>
