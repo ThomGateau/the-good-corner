@@ -1,50 +1,86 @@
-const NewAdFormPage = () => (
-  <form
-    onSubmit={(e) => {
-      e.preventDefault();
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { categorie } from "../components/Header";
 
-      const form = e.target;
-      const formdata = new FormData(form as HTMLFormElement);
+const NewAdFormPage = () => {
+  const [categories, setCategories] = useState([] as categorie[]);
 
-      const formJson = Object.fromEntries(formdata.entries());
-      console.log(formJson);
-    }}
-  >
-    <label>
-      Titre de l'annonce :
-      <input className="text-field" type="text" name="title" />
-    </label>
-    <br />
-    <label>
-      Description :
-      <input className="text-field" type="text" name="description" />
-    </label>
-    <br />
-    <label>
-      Owner :
-      <input className="text-field" type="text" name="owner" />
-    </label>
-    <br />
-    <label>
-      Price :
-      <input className="text-field" type="number" name="price" />
-    </label>
-    <br />
-    <label>
-      Picture :
-      <input className="text-field" type="text" name="picture" />
-    </label>
-    <br />
-    <label>
-      Location :
-      <input className="text-field" type="text" name="location" />
-    </label>
-    <br />
-    <label>
-      Date :
-      <input className="text-field" type="date" name="createdAt" />
-    </label>
-    <button className="button">Submit</button>
-  </form>
-);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const result = await axios.get("http://localhost:3000/categorie");
+        console.log(result);
+        setCategories(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        const form = e.target;
+        const formdata = new FormData(form as HTMLFormElement);
+
+        const formJson = Object.fromEntries(formdata.entries());
+        axios.post("http://localhost:3000/ads", formJson);
+      }}
+    >
+      <label>
+        Titre de l'annonce :
+        <br />
+        <input className="text-field" type="text" name="title" />
+      </label>
+      <br />
+      <label>
+        Description :
+        <br />
+        <input className="text-field" type="text" name="description" />
+      </label>
+      <br />
+      <label>
+        Owner :
+        <br />
+        <input className="text-field" type="text" name="owner" />
+      </label>
+      <br />
+      <label>
+        Price :
+        <br />
+        <input className="text-field" type="number" name="price" />
+      </label>
+      <br />
+      <label>
+        Picture :
+        <br />
+        <input className="text-field" type="text" name="picture" />
+      </label>
+      <br />
+      <label>
+        Location :
+        <br />
+        <input className="text-field" type="text" name="location" />
+      </label>
+      <br />
+      <label>
+        Date :
+        <br />
+        <input className="text-field" type="date" name="createdAt" />
+      </label>
+      <br />
+      <select name="categorie">
+        {categories.map((el) => (
+          <option key={el.id} value={el.id}>
+            {el.name}
+          </option>
+        ))}
+      </select>
+      <button className="button">Submit</button>
+    </form>
+  );
+};
 export default NewAdFormPage;

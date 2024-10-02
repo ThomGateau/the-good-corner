@@ -53,6 +53,17 @@ app.get("/ads", async (req, res) => {
   }
 });
 
+app.get("/ads/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const adById = await Ad.findOneByOrFail({ id });
+    res.send(adById);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Invalid request");
+  }
+});
+
 app.post("/ads", async (req, res) => {
   const ad = new Ad();
   ad.title = req.body.title;

@@ -4,6 +4,7 @@ import RecentAds from "./components/RecentAds";
 import AboutPage from "./pages/AboutPage";
 import AdDetailsPage from "./pages/AdDetailsPage";
 import NewAdFormPage from "./pages/NewAdFormPage";
+import NewCategoryFormPage from "./pages/NewCategoryFormPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="about" element={<AboutPage />} />
           <Route path="ad/new" element={<NewAdFormPage />} />
           <Route path="ad/:id" element={<AdDetailsPage />} />
+          <Route path="categorie/new" element={<NewCategoryFormPage />} />
         </Route>
       </Routes>
     </>

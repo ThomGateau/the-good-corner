@@ -1,38 +1,45 @@
-import { BaseEntity, Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { MinLength } from "class-validator";
 import { Categorie } from "./Categorie";
 import { Tag } from "./Tag";
 
 @Entity()
 export class Ad extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    title: string;
+  @Column()
+  title: string;
 
-    @Column()
-    @MinLength(10)
-    description: string;
+  @Column()
+  @MinLength(10)
+  description: string;
 
-    @Column()
-    owner: string;
+  @Column()
+  owner: string;
 
-    @Column()
-    price: number;
+  @Column()
+  price: number;
 
-    @Column()
-    picture: string;
+  @Column()
+  picture: string;
 
-    @Column()
-    location: string;
+  @Column()
+  location: string;
 
-    @Column()
-    createdAt: Date;
+  @Column()
+  createdAt: Date;
 
-    @ManyToOne(() => Categorie, categorie => categorie.ads)
-    categorie: Categorie;
+  @ManyToOne(() => Categorie, (categorie) => categorie.ads, { eager: true })
+  categorie: Categorie;
 
-    @ManyToMany(() => Tag, tag => tag.ads)
-    tags: Tag[];
+  @ManyToMany(() => Tag, (tag) => tag.ads)
+  tags: Tag[];
 }

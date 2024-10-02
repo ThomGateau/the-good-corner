@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-type categorie = {
+export type categorie = {
   id: number;
   name: number;
 };
 
 const Header = () => {
   const [categories, setCategories] = useState([] as categorie[]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -20,6 +21,7 @@ const Header = () => {
     };
     fetchCategories();
   }, []);
+
   return (
     <header className="header">
       <div className="main-menu">
