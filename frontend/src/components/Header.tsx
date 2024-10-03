@@ -15,7 +15,6 @@ const Header = () => {
     const fetchCategories = async () => {
       try {
         const result = await axios.get("http://localhost:3000/categorie");
-        console.log(result);
         setCategories(result.data);
       } catch (error) {
         console.log(error);
@@ -72,7 +71,11 @@ const Header = () => {
       </div>
       <nav className="categories-navigation">
         {categories.map((el) => (
-          <a key={el.id} href="" className="category-navigation-link">
+          <a
+            key={el.id}
+            href={`/ad/filter/${el.name}`}
+            className="category-navigation-link"
+          >
             {el.name}
           </a>
         ))}

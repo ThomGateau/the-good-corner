@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { AdCardProps } from "../components/AdCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -33,6 +33,7 @@ const AdDetailPage = () => {
     };
     fetchData();
   }, [id]);
+
   return (
     <>
       <h2>Details of ad {id}</h2>
@@ -78,6 +79,9 @@ const AdDetailPage = () => {
             >
               Delete
             </button>
+            <Link className="button" to={`/ad/modify/${ad.id}`}>
+              Modify
+            </Link>
           </section>
         ) : (
           <p>Ad not found</p>

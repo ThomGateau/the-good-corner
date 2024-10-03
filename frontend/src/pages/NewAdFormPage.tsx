@@ -72,12 +72,6 @@ const NewAdFormPage = () => {
         <input className="text-field" type="text" name="location" />
       </label>
       <br />
-      <label>
-        Date :
-        <br />
-        <input className="text-field" type="date" name="createdAt" />
-      </label>
-      <br />
       <select name="categorie">
         {categories.map((el) => (
           <option key={el.id} value={el.id}>

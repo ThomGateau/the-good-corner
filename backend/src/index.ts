@@ -23,7 +23,6 @@ app.get("/ads", async (req, res) => {
   if (req.query.categorie) {
     const adsByCategorie = await Ad.find({
       relations: {
-        categorie: true,
         tags: true,
       },
       where: {
@@ -34,7 +33,6 @@ app.get("/ads", async (req, res) => {
   } else if (req.query.tag) {
     const adsByTags = await Ad.find({
       relations: {
-        categorie: true,
         tags: true,
       },
       where: {
@@ -49,6 +47,11 @@ app.get("/ads", async (req, res) => {
       },
     });
     res.send(ads);
+  } else if (req.query.id) {
+    const adsByTags = await Ad.findOneByOrFail({
+      id: parseInt(req.query.id as string),
+    });
+    res.send(adsByTags);
   } else {
     const ads = await Ad.find({
       relations: {

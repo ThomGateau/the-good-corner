@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToMany,
   ManyToOne,
@@ -34,7 +35,7 @@ export class Ad extends BaseEntity {
   @Column()
   location: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
   @ManyToOne(() => Categorie, (categorie) => categorie.ads, { eager: true })

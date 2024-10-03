@@ -13,7 +13,6 @@ const RecentAds = () => {
         const result = await axios.get<AdCardProps[]>(
           "http://localhost:3000/ads"
         );
-        console.log(result);
         setAds(result.data);
       } catch (error) {
         console.log(error);
@@ -28,6 +27,7 @@ const RecentAds = () => {
       <p style={{ color: color }}>
         Total : {total} €
         <button
+          className="button button-primary"
           onClick={() => {
             setTotal(0);
             setColor("rgb(0,0,0)");
@@ -48,6 +48,7 @@ const RecentAds = () => {
               categorie={el.categorie}
             />
             <button
+              className="button"
               onClick={() => {
                 setTotal(total + el.price);
                 const blue = Math.floor(Math.random() * 256);
