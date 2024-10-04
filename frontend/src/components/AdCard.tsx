@@ -13,6 +13,10 @@ export type AdCardProps = {
     id: number;
     name: string;
   };
+  tags: {
+    id: number;
+    name: string;
+  }[];
 };
 
 const AdCart = ({ title, id, price, picture, categorie }: AdCardProps) => (

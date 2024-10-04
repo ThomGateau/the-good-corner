@@ -41,6 +41,6 @@ export class Ad extends BaseEntity {
   @ManyToOne(() => Categorie, (categorie) => categorie.ads, { eager: true })
   categorie: Categorie;
 
-  @ManyToMany(() => Tag, (tag) => tag.ads)
+  @ManyToMany(() => Tag, (tag) => tag.ads, { eager: true })
   tags: Tag[];
 }

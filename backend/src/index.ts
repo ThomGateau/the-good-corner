@@ -22,9 +22,6 @@ app.get("/", (_req, res) => {
 app.get("/ads", async (req, res) => {
   if (req.query.categorie) {
     const adsByCategorie = await Ad.find({
-      relations: {
-        tags: true,
-      },
       where: {
         categorie: { name: req.query.categorie as string },
       },
@@ -32,9 +29,6 @@ app.get("/ads", async (req, res) => {
     res.send(adsByCategorie);
   } else if (req.query.tag) {
     const adsByTags = await Ad.find({
-      relations: {
-        tags: true,
-      },
       where: {
         tags: { name: req.query.tag as string },
       },
@@ -53,12 +47,7 @@ app.get("/ads", async (req, res) => {
     });
     res.send(adsByTags);
   } else {
-    const ads = await Ad.find({
-      relations: {
-        categorie: true,
-        tags: true,
-      },
-    });
+    const ads = await Ad.find({});
     res.send(ads);
   }
 });
